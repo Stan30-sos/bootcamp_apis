@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>Words Game widget</h1>
+
+    <div x-data="{
+        sentence: '',
+        longestWord: '',
+        shortestWord: '',
+        wordCount: 0,
+        checkSentence(){
+
+            axios
+                .get(`/api/word_game?sentence=${this.sentence}`)
+                .then((result)=> {
+                    this.longestWord = result.data.longestWord
+                    this.shortestWord = result.data.shortestWord
+                    this.wordCount = result.data.sum;
+                })
+            
+
+
+        }
+    }">
+
+        <div>
+            <textarea x-model="sentence" name="" id="" cols="30" rows="5"></textarea>
+        </div>
+        <div>
+            <button @click="checkSentence">Check sentence</button>
+        </div>
+        <div>
+            <div>
+                Longest Word: <span x-text="longestWord"></span>
+            </div>
+            <div>
+                Shortest Word: <span x-text="shortestWord"></span>
+            </div>
+            <div>
+                Words count: <span x-text="wordCount"></span>
+            </div>
+        </div>
+    </div>
+
+    <h1>Total Phone Bill widget</h1>
+
+    <div class="phonebill" x-data="{
+            itemsUsed : '',
+            totalCost :'0.00',
+            billMessage : '',
+            billDue(){
+
+                axios
+                .get(`/api/phonebill/total?=${this.total}`)
+                .then((result)=> {
+                    this.billMessage = result.data.itemsUsed;
+                })
+                
+            }
+    }">
+        
+        <div class="bill-input">
+        <label for="bill">Plese enter your </label>
+        <input type="text" id="bill" placeholder="items here" x-model="itemsUsed">
+        </div>
+        <div class="bill-message"  x-text="billMessage">
+        Your total bill is ....
+        </div>
+        <button @click="billDue" >Check bill</button>
+           </div>
+</body>
+</html>
